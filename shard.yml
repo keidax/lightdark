@@ -1,0 +1,17 @@
+name: theme-watcher
+version: 0.1.0
+
+authors:
+  - Gabriel Holodak <gthepiper@gmail.com>
+
+targets:
+  theme-watcher:
+    main: src/theme-watcher.cr
+
+dependencies:
+  hoop:
+    path: ~/code/hoop
+
+crystal: 0.31.1
+
+license: MIT
