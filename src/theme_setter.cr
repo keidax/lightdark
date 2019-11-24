@@ -1,3 +1,5 @@
+require "./*"
+
 abstract class ThemeSetter
   abstract def set_theme(theme : String)
 end
