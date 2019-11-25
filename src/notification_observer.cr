@@ -9,11 +9,11 @@ class NotificationObserver < NSObject
     when /light/i
       # 🌝 🌞 🌕 🌙 🌜
       puts("🌕 #{LIGHT_THEME}")
-      ThemeController.set_theme(Mode::LIGHT)
+      ThemeController.set_theme(Mode::Light)
     when /dark/i
       # 🌚 🌑
       puts("🌑 #{DARK_THEME}")
-      ThemeController.set_theme(Mode::DARK)
+      ThemeController.set_theme(Mode::Dark)
     else
       puts("💀 #{current_theme}")
     end

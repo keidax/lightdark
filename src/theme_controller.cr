@@ -1,12 +1,20 @@
 require "./*"
 
-enum Mode
-  DARK
-  LIGHT
-end
-
 DARK_THEME = "gruvbox-dark-hard"
 LIGHT_THEME = "one-light"
+
+enum Mode
+  Dark
+  Light
+
+  def theme
+    case self
+    when .dark? then DARK_THEME
+    when .light? then LIGHT_THEME
+    else raise "unknown mode #{self}"
+    end
+  end
+end
 
 class ThemeController
   @@setters : Array(ThemeSetter) = [] of ThemeSetter
@@ -16,11 +24,6 @@ class ThemeController
   end
 
   def self.set_theme(mode : Mode)
-    theme = case mode
-            when .dark? then DARK_THEME
-            when .light? then LIGHT_THEME
-            else raise "unknown mode #{mode}"
-            end
-    @@setters.each &.set_theme(theme)
+      @@setters.each &.set_theme(mode)
   end
 end
