@@ -1,6 +1,6 @@
 require "./*"
 
-DARK_THEME = "gruvbox-dark-hard"
+DARK_THEME  = "gruvbox-dark-hard"
 LIGHT_THEME = "one-light"
 
 enum Mode
@@ -9,9 +9,9 @@ enum Mode
 
   def theme
     case self
-    when .dark? then DARK_THEME
+    when .dark?  then DARK_THEME
     when .light? then LIGHT_THEME
-    else raise "unknown mode #{self}"
+    else              raise "unknown mode #{self}"
     end
   end
 end
@@ -24,6 +24,6 @@ class ThemeController
   end
 
   def self.set_theme(mode : Mode)
-      @@setters.each &.set_theme(mode)
+    @@setters.each &.set_theme(mode)
   end
 end

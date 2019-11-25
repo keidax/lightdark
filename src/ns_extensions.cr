@@ -6,10 +6,10 @@ include Hoop
 # NSApp.activation_policy = LibAppKit::NSApplicationActivationPolicy::Regular
 
 class NSDistributedNotificationCenter < NSNotificationCenter
-    # register_class
-    # static_method "defaultCenter", nil, "NSDistributedNotificationCenter", "default_center"
-    # TODO: "NSString" should really be "NSNotificationName" but I'm not sure how to make a string pointer
-    # method "addObserver:selector:name:object:", ["id", "SEL", "NSString", "id"], "void", "add_observer"
+  # register_class
+  # static_method "defaultCenter", nil, "NSDistributedNotificationCenter", "default_center"
+  # TODO: "NSString" should really be "NSNotificationName" but I'm not sure how to make a string pointer
+  # method "addObserver:selector:name:object:", ["id", "SEL", "NSString", "id"], "void", "add_observer"
 end
 
 class NSUserDefaults < NSObject
@@ -30,7 +30,8 @@ class SafeString
     end
   end
 
-  def with_default(default : String) String
+  def with_default(default : String)
+    String
     @str || default
   end
 end
