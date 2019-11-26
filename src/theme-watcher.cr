@@ -2,6 +2,7 @@ require "./*"
 
 ThemeController.register(ShellThemeSetter.new)
 ThemeController.register(VimThemeSetter.new)
+ThemeController.register(SocketThemeSetter.new)
 
 handler = NotificationObserver.new
 dnc = NSDistributedNotificationCenter.default_center
