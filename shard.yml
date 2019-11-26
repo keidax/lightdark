@@ -1,12 +1,12 @@
-name: theme-watcher
+name: lightdark
 version: 0.1.0
 
 authors:
   - Gabriel Holodak <gthepiper@gmail.com>
 
 targets:
-  theme-watcher:
-    main: src/theme-watcher.cr
+  lightdark:
+    main: src/lightdark.cr
 
 dependencies:
   hoop:
