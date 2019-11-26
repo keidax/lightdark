@@ -1,13 +1,5 @@
+require "./socket"
 require "./theme_setter"
-
-require "../../sendmsg-test/socket"
-
-
-class IO::FileDescriptor
-  def expose_closed?
-    system_closed?
-  end
-end
 
 class SocketThemeSetter < ThemeSetter
   @socket : UNIXServer
