@@ -2,6 +2,13 @@ require "hoop"
 
 include Hoop
 
+lib LibCF
+  $ns_default_run_loop_mode = NSDefaultRunLoopMode : UInt8*
+  $ns_run_loop_common_modes = NSRunLoopCommonModes : UInt8*
+  $ns_event_tracking_run_loop_mode = NSEventTrackingRunLoopMode : UInt8*
+  $ns_connection_reply_mode = NsConnectionReplyMode : UInt8*
+end
+
 # NSAutoreleasePool.new
 # NSApp.activation_policy = LibAppKit::NSApplicationActivationPolicy::Regular
 
@@ -16,6 +23,16 @@ class NSUserDefaults < NSObject
   register_class
   static_method "standardUserDefaults", nil, "NSUserDefaults", "standard_user_defaults"
   method "stringForKey:", ["NSString"], "SafeString", "string_for_key"
+end
+
+class NSRunLoopMode < NSObject
+  register_class
+end
+
+class NSDate < NSObject
+  register_class
+  static_method "dateWithTimeIntervalSinceNow:", ["NSTimeInterval"], "NSDate", "date_with_time_interval_since_now"
+  method "earlierDate:", ["NSDate"], "NSDate", "earlier_date"
 end
 
 class SafeString
@@ -34,4 +51,19 @@ class SafeString
     String
     @str || default
   end
+end
+
+class NSRunLoop < NSObject
+  register_class
+  static_method "currentRunLoop", nil, "NSRunLoop", "current_run_loop"
+  static_method "mainRunLoop", nil, "NSRunLoop", "main_run_loop"
+  method "currentMode", nil, "NSRunLoopMode", "current_mode"
+  method "limitDateForMode:", ["NSRunLoopMode"], "NSDate", "limit_date_for_mode"
+  method "runMode:beforeDate:", ["NSRunLoopMode", "NSDate"], "BOOL", "run_mode_before_date"
+  method "runUntilDate:", ["NSDate"], nil, "run_until_date"
+end
+
+class Hoop::NSApplication
+  method "finishLaunching", nil, nil, "finish_launching"
+  method "terminate:", ["id"], nil, "terminate"
 end
