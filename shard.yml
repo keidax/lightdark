@@ -9,12 +9,11 @@ targets:
     main: src/lightdark.cr
 
 dependencies:
-  hoop:
-    path: ~/code/hoop
   commander:
     github: mrrooijen/commander
     version: ~> 0.3.4
-
+  croft:
+    path: ~/code/croft
 
 crystal: 0.31.1
 

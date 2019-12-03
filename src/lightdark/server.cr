@@ -1,8 +1,6 @@
-require "hoop"
+require "croft"
 
 require "../theme_controller"
-
-include Hoop
 
 def serve(bool : Bool)
   ThemeController.register(ShellThemeSetter.new)
@@ -10,12 +8,12 @@ def serve(bool : Bool)
   ThemeController.register(SocketThemeSetter.new)
 
   handler = NotificationObserver.new
-  dnc = Hoop::NSDistributedNotificationCenter.default_center
-  dnc.add_observer(handler.to_objc, "themeChanged:", "AppleInterfaceThemeChangedNotification", nil)
+  dnc = Croft::DistributedNotificationCenter.default
+  dnc.add_observer(handler, Croft::Selector["themeChanged:"], Croft::String.new("AppleInterfaceThemeChangedNotification"), nil)
 
-  NSApp.finish_launching
+  Croft::Application.shared_application.finish_launching
 
-  run_loop = NSRunLoop.current_run_loop
+  run_loop = Croft::RunLoop.current
 
   Signal::INT.trap do
     # Exit quietly, closing server socket
@@ -23,9 +21,9 @@ def serve(bool : Bool)
   end
 
   loop do
-    soon = NSDate.date_with_time_interval_since_now(1.0)
+    soon = Croft::Date.from_now(seconds: 1.0)
 
-    run_loop.run_until_date(soon.to_objc)
+    run_loop.run_until(soon)
     Fiber.yield
   end
 end

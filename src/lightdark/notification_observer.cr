@@ -1,14 +1,12 @@
-require "hoop"
+require "croft"
 
-require "./ns_extensions"
 require "../theme_controller"
 
-class NotificationObserver < Hoop::NSObject
-  include Hoop
-  export_class
-  action "theme_changed", "notice", "themeChanged:" do
-    # notification = NSNotification.new(notice)
+class NotificationObserver < Croft::Class
+  export
 
+  export_instance_method "themeChanged:", def theme_changed(notice : Croft::String)
+    # notification = NSNotification.new(notice)
     case current_theme
     when /light/i
       # 🌝 🌞 🌕 🌙 🌜
@@ -24,6 +22,12 @@ class NotificationObserver < Hoop::NSObject
   end
 
   def current_theme : String
-    Hoop::NSUserDefaults.standard_user_defaults.string_for_key("AppleInterfaceStyle").with_default("Light")
+    style = Croft::UserDefaults.standard_user_defaults[Croft::String.new("AppleInterfaceStyle")].to_s
+
+    if style.empty?
+      "Light"
+    else
+      "Dark"
+    end
   end
 end

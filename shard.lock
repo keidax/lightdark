@@ -4,7 +4,6 @@ shards:
     github: mrrooijen/commander
     version: 0.3.4
 
-  hoop:
-    path: ~/code/hoop
+  croft:
+    path: ~/code/croft
     version: 0
-
