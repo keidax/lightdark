@@ -26,11 +26,11 @@ module Lightdark
         end
       end
     end
-    cmd.commands.add do |cmd|
-      cmd.use = "serve"
+    cmd.commands.add do |serve_cmd|
+      serve_cmd.use = "serve"
 
-      cmd.run do |_, arguments|
-        serve(false)
+      serve_cmd.run do |_, _|
+        serve
       end
     end
   end

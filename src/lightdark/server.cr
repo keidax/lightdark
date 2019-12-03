@@ -2,7 +2,7 @@ require "croft"
 
 require "../theme_controller"
 
-def serve(bool : Bool)
+def serve
   ThemeController.register(ShellThemeSetter.new)
   ThemeController.register(VimThemeSetter.new)
   ThemeController.register(SocketThemeSetter.new)

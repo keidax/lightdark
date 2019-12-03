@@ -1,6 +1,10 @@
 name: lightdark
 version: 0.1.0
 
+crystal: 0.31.1
+
+license: MIT
+
 authors:
   - Gabriel Holodak <gthepiper@gmail.com>
 
@@ -15,6 +19,7 @@ dependencies:
   croft:
     path: ~/code/croft
 
-crystal: 0.31.1
-
-license: MIT
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 0.11.0

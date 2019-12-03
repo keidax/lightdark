@@ -1,5 +1,9 @@
 version: 1.0
 shards:
+  ameba:
+    github: crystal-ameba/ameba
+    version: 0.11.0
+
   commander:
     github: mrrooijen/commander
     version: 0.3.4
@@ -7,3 +11,4 @@ shards:
   croft:
     path: ~/code/croft
     version: 0
+

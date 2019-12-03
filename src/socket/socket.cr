@@ -28,7 +28,7 @@ class UNIXSocket
       raise Errno.new("sendmsg:")
     end
 
-    return LibC::Cmsghdr.data(cmsg, Int32).value
+    LibC::Cmsghdr.data(cmsg, Int32).value
   end
 
   private def new_cmsg(fd) : LibC::Cmsghdr
