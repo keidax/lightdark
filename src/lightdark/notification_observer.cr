@@ -1,6 +1,10 @@
-require "./*"
+require "hoop"
 
-class NotificationObserver < NSObject
+require "./ns_extensions"
+require "../theme_controller"
+
+class NotificationObserver < Hoop::NSObject
+  include Hoop
   export_class
   action "theme_changed", "notice", "themeChanged:" do
     # notification = NSNotification.new(notice)
@@ -8,11 +12,11 @@ class NotificationObserver < NSObject
     case current_theme
     when /light/i
       # 🌝 🌞 🌕 🌙 🌜
-      puts("🌕 #{LIGHT_THEME}")
+      puts("🌕")
       ThemeController.set_theme(Mode::Light)
     when /dark/i
       # 🌚 🌑
-      puts("🌑 #{DARK_THEME}")
+      puts("🌑")
       ThemeController.set_theme(Mode::Dark)
     else
       puts("💀 #{current_theme}")
@@ -20,6 +24,6 @@ class NotificationObserver < NSObject
   end
 
   def current_theme : String
-    NSUserDefaults.standard_user_defaults.string_for_key("AppleInterfaceStyle").with_default("Light")
+    Hoop::NSUserDefaults.standard_user_defaults.string_for_key("AppleInterfaceStyle").with_default("Light")
   end
 end

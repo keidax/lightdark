@@ -11,6 +11,10 @@ targets:
 dependencies:
   hoop:
     path: ~/code/hoop
+  commander:
+    github: mrrooijen/commander
+    version: ~> 0.3.4
+
 
 crystal: 0.31.1
 

@@ -1,28 +1,39 @@
-require "./*"
+require "commander"
 
-ThemeController.register(ShellThemeSetter.new)
-ThemeController.register(VimThemeSetter.new)
-ThemeController.register(SocketThemeSetter.new)
+require "./lightdark/*"
 
-handler = NotificationObserver.new
-dnc = NSDistributedNotificationCenter.default_center
-dnc.add_observer(handler.to_objc, "themeChanged:", "AppleInterfaceThemeChangedNotification", nil)
-
-NSApp.finish_launching
-
-run_loop = NSRunLoop.current_run_loop
-
-Signal::INT.trap do
-  # Exit quietly, closing server socket
-  exit
+def fatal!(error, status = 1)
+  STDERR.puts error
+  exit(status)
 end
 
-while true
-  soon = NSDate.date_with_time_interval_since_now(1.0)
+module Lightdark
+  CLI = Commander::Command.new do |cmd|
+    cmd.use = "lightdark"
 
-  run_loop.run_until_date(soon.to_objc)
-  Fiber.yield
+    cmd.commands.add do |toggle|
+      toggle.use = "toggle [light|dark]"
+      toggle.short = "Toggle between light and dark mode"
+      toggle.long = toggle.short
+
+      toggle.run do |_, arguments|
+        if arguments.none?
+          Toggle.toggle
+        elsif arguments.one?
+          Toggle.toggle(arguments.first)
+        else
+          fatal! "Only one argument to `toggle` allowed!"
+        end
+      end
+    end
+    cmd.commands.add do |cmd|
+      cmd.use = "serve"
+
+      cmd.run do |_, arguments|
+        serve(false)
+      end
+    end
+  end
 end
 
-# puts "running"
-# NSApp.run
+Commander.run(Lightdark::CLI, ARGV)
