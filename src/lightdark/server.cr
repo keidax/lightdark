@@ -3,9 +3,8 @@ require "croft"
 require "../theme_controller"
 
 def serve
-  ThemeController.register(ShellThemeSetter.new)
   ThemeController.register(VimThemeSetter.new)
-  ThemeController.register(SocketThemeSetter.new)
+  ThemeController.register(TTYThemeSetter.new)
 
   handler = NotificationObserver.new
   dnc = Croft::DistributedNotificationCenter.default
