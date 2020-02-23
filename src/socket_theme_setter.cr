@@ -6,7 +6,7 @@ class SocketThemeSetter < ThemeSetter
   @fds : Array(IO::FileDescriptor)
 
   def initialize
-    @socket = UNIXServer.new(Path["~/lightdark.sock"].expand.to_s)
+    @socket = UNIXServer.new(Path["~/lightdark.sock"].expand(home: true).to_s)
     @fds = [] of IO::FileDescriptor
 
     spawn do
@@ -38,7 +38,6 @@ class SocketThemeSetter < ThemeSetter
 
         fd.puts(mode.theme)
         fd.flush
-
       rescue e : Errno
         puts "fd closed: #{e}"
         @fds.delete(fd)

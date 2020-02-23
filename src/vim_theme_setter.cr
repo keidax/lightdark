@@ -4,7 +4,7 @@ class VimThemeSetter < ThemeSetter
   @file : File
 
   def initialize
-    @file = File.open(Path["~/vim_pipe.txt"].expand, "w")
+    @file = File.open(Path["~/vim_pipe.txt"].expand(home: true), "w")
   end
 
   def set_theme(mode : Mode)

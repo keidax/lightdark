@@ -6,7 +6,7 @@ shards:
 
   commander:
     github: mrrooijen/commander
-    version: 0.3.4
+    version: 0.3.5
 
   croft:
     path: ~/code/croft
