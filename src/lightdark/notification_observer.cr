@@ -14,11 +14,11 @@ class NotificationObserver < Croft::Class
     case current_theme
     when /light/i
       # 🌝 🌞 🌕 🌙 🌜
-      puts("🌕") if @verbose
+      puts("🌕 setting #{Mode::Light.theme}") if @verbose
       ThemeController.set_theme(Mode::Light)
     when /dark/i
       # 🌚 🌑
-      puts("🌑") if @verbose
+      puts("🌑 setting #{Mode::Dark.theme}") if @verbose
       ThemeController.set_theme(Mode::Dark)
     else
       puts("💀 unexpected theme #{current_theme}") if @verbose

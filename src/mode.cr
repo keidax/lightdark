@@ -1,5 +1,5 @@
-DARK_THEME  = "gruvbox-dark-hard"
-LIGHT_THEME = "one-light"
+DEFAULT_DARK_THEME  = "gruvbox-dark-hard"
+DEFAULT_LIGHT_THEME = "one-light"
 
 enum Mode
   Dark
@@ -7,8 +7,8 @@ enum Mode
 
   def theme
     case self
-    when .dark?  then DARK_THEME
-    when .light? then LIGHT_THEME
+    when .dark?  then ENV.fetch("LIGHTDARK_DARK_THEME", DEFAULT_DARK_THEME)
+    when .light? then ENV.fetch("LIGHTDARK_LIGHT_THEME", DEFAULT_LIGHT_THEME)
     else              raise "unknown mode #{self}"
     end
   end
