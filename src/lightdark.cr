@@ -29,8 +29,16 @@ module Lightdark
     cmd.commands.add do |serve_cmd|
       serve_cmd.use = "serve"
 
-      serve_cmd.run do |_, _|
-        serve
+      serve_cmd.flags.add do |flag|
+        flag.name = "verbose"
+        flag.short = "-v"
+        flag.long = "--verbose"
+        flag.description = "More verbose output"
+        flag.default = false
+      end
+
+      serve_cmd.run do |options, _|
+        serve(options.bool["verbose"])
       end
     end
   end

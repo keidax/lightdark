@@ -16,33 +16,27 @@ class TTYThemeSetter < ThemeSetter
 
     @zsh.output.read_timeout = 0.5
     mode_data = @zsh.output.read_all_available
-    puts "original data: #{mode_data.size} bytes"
 
     Mode.each do |mode|
-      print "writing #{mode} theme to shell: "
       @zsh.input << "eval base16_#{mode.theme}\n"
       mode_data = @zsh.output.read_all_available
-      puts "#{mode_data.size} bytes"
       @theme_data[mode] = mode_data
     end
   end
 
   def set_theme(mode : Mode)
-    puts "setting theme"
     active_ttys.each do |tty_path|
       spawn do
         File.open(tty_path, mode: "wb") do |file|
           file << @theme_data[mode]
           file.flush
         end
-        puts "wrote: #{tty_path}"
       end
     end
     Fiber.yield
 
     @zsh.input << "eval base16_#{mode.theme}\n"
     bytes = @zsh.output.read_all_available.size
-    puts "wrote theme back to Zsh, and got #{bytes} bytes"
   end
 
   private def active_ttys : Enumerable(Path)
@@ -71,7 +65,7 @@ module IO::Evented
         str.write slice[0, read_bytes]
       end
     rescue IO::Timeout
-      puts "rescued"
+      # puts "rescued"
     end
   end
 end

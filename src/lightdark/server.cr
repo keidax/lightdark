@@ -2,11 +2,11 @@ require "croft"
 
 require "../theme_controller"
 
-def serve
+def serve(verbose = false)
   ThemeController.register(VimThemeSetter.new)
   ThemeController.register(TTYThemeSetter.new)
 
-  handler = NotificationObserver.new
+  handler = NotificationObserver.new(verbose)
   dnc = Croft::DistributedNotificationCenter.default
   dnc.add_observer(handler, Croft::Selector["themeChanged:"], Croft::String.new("AppleInterfaceThemeChangedNotification"), nil)
 

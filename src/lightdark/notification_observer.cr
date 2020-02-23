@@ -5,19 +5,23 @@ require "../theme_controller"
 class NotificationObserver < Croft::Class
   export
 
+  def initialize(@verbose : Bool)
+    super()
+  end
+
   export_instance_method "themeChanged:", def theme_changed(notice : Croft::String)
     # notification = NSNotification.new(notice)
     case current_theme
     when /light/i
       # 🌝 🌞 🌕 🌙 🌜
-      puts("🌕")
+      puts("🌕") if @verbose
       ThemeController.set_theme(Mode::Light)
     when /dark/i
       # 🌚 🌑
-      puts("🌑")
+      puts("🌑") if @verbose
       ThemeController.set_theme(Mode::Dark)
     else
-      puts("💀 #{current_theme}")
+      puts("💀 unexpected theme #{current_theme}") if @verbose
     end
   end
 
