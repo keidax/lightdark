@@ -1,7 +1,7 @@
 name: lightdark
 version: 0.1.0
 
-crystal: 0.33.0
+crystal: 0.34.0
 
 license: MIT
 

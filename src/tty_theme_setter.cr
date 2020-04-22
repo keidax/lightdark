@@ -64,7 +64,7 @@ module IO::Evented
         read_bytes = self.read(slice)
         str.write slice[0, read_bytes]
       end
-    rescue IO::Timeout
+    rescue IO::TimeoutError
       # puts "rescued"
     end
   end
