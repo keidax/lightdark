@@ -2,6 +2,8 @@
 
 Switch between macOS Light and Dark mode in iTerm!
 
+![Demo](demo.gif)
+
 While `lightdark` is running, switching the system appearance will change the theme in all open terminals.
 
 Requirements:
