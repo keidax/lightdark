@@ -35,6 +35,33 @@ And optionally, install the binary somewhere on your PATH:
 sudo cp ./bin/lightdark /usr/local/bin/lightdark
 ```
 
+If you want lightdark to automatically start when you log in, create a plist file like this at `~/Library/LaunchAgents/com.github.keidax.lightdark.plist`:
+
+``` xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>EnvironmentVariables</key>
+        <dict>
+                <key>BASE16_SHELL</key>
+                <string>~/.config/base16-shell</string>
+        </dict>
+        <key>KeepAlive</key>
+        <true/>
+        <key>Label</key>
+        <string>com.github.keidax.lightdark</string>
+        <key>ProgramArguments</key>
+        <array>
+                <string>/usr/local/bin/lightdark</string>
+                <string>serve</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+</dict>
+</plist>
+```
+
 ## Usage
 
 Use `lightdark serve` to run the lightdark daemon.
