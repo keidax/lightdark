@@ -1,25 +1,50 @@
 require "./theme_setter"
 
+# TODO: consider tmux as well
 class TTYThemeSetter < ThemeSetter
   @zsh : Process
   @theme_data = Hash(Mode, String).new
 
   def initialize
+    # Set up necessary environment variables.
+    base16_shell = ENV["BASE16_SHELL"]? || "~/.config/base16-shell"
+    base16_shell_path = Path[base16_shell].expand(home: true)
+    unless File.directory?(base16_shell_path)
+      raise "Could not find base16-shell files! Please set the BASE16_SHELL environment variable."
+    end
+
+    # Provide a fake value if started outside of iTerm.
+    # Necessary so the base16-shell scripts use the right escape sequences.
+    iterm_session_id = ENV["ITERM_SESSION_ID"]? || "w0t0p0"
+
+    # Start a ZSH coprocess to load escape sequences.
     @zsh = Process.new("zsh", ["-s", "--no-interactive", "--no-login"],
       input: Process::Redirect::Pipe,
       output: Process::Redirect::Pipe,
       error: Process::Redirect::Inherit,
+      env: {
+        "BASE16_SHELL"     => base16_shell_path.to_s,
+        "ITERM_SESSION_ID" => iterm_session_id,
+      }
     )
-    @zsh.input << %(eval "$($DOTDIR/base16/base16-shell/profile_helper.sh)"\n)
+    @zsh.input << %(eval "$($BASE16_SHELL/profile_helper.sh)"\necho\n)
 
-    sleep 0.5
+    # Loading the profile helper will output colors, but we don't know which
+    # ones, so just throw them away.
+    @zsh.output.read_line
 
-    @zsh.output.read_timeout = 0.5
-    mode_data = @zsh.output.read_all_available
+    # We want to make sure that the active mode is evaluated _last_.
+    # Otherwise, when starting a new terminal, the colors might be wrong.
+    modes = case Mode.current
+            when .dark?
+              [Mode::Light, Mode::Dark]
+            else
+              [Mode::Dark, Mode::Light]
+            end
 
-    Mode.each do |mode|
-      @zsh.input << "eval base16_#{mode.theme}\n"
-      mode_data = @zsh.output.read_all_available
+    modes.each do |mode|
+      @zsh.input << "eval base16_#{mode.theme}\necho\n"
+      mode_data = @zsh.output.read_line
       @theme_data[mode] = mode_data
     end
   end
@@ -35,8 +60,9 @@ class TTYThemeSetter < ThemeSetter
     end
     Fiber.yield
 
-    @zsh.input << "eval base16_#{mode.theme}\n"
-    bytes = @zsh.output.read_all_available.size
+    # Make sure the theme is set for new terminals
+    @zsh.input << "eval base16_#{mode.theme}\necho\n"
+    @zsh.output.read_line
   end
 
   private def active_ttys : Enumerable(Path)
@@ -51,21 +77,5 @@ class TTYThemeSetter < ThemeSetter
     end.select do |path|
       File.writable?(path)
     end.to_a
-  end
-end
-
-module IO::Evented
-  # Requires read_timeout to be set
-  def read_all_available : String
-    slice = Bytes.new(512)
-
-    String.build do |str|
-      loop do
-        read_bytes = self.read(slice)
-        str.write slice[0, read_bytes]
-      end
-    rescue IO::TimeoutError
-      # puts "rescued"
-    end
   end
 end
