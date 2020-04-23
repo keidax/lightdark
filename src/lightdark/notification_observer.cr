@@ -11,27 +11,15 @@ class NotificationObserver < Croft::Class
 
   export_instance_method "themeChanged:", def theme_changed(notice : Croft::String)
     # notification = NSNotification.new(notice)
-    case current_theme
-    when /light/i
+    case Mode.current
+    when .light?
       # 🌝 🌞 🌕 🌙 🌜
       puts("🌕 setting #{Mode::Light.theme}") if @verbose
       ThemeController.set_theme(Mode::Light)
-    when /dark/i
+    when .dark?
       # 🌚 🌑
       puts("🌑 setting #{Mode::Dark.theme}") if @verbose
       ThemeController.set_theme(Mode::Dark)
-    else
-      puts("💀 unexpected theme #{current_theme}") if @verbose
-    end
-  end
-
-  def current_theme : String
-    style = Croft::UserDefaults.standard_user_defaults[Croft::String.new("AppleInterfaceStyle")].to_s
-
-    if style.empty?
-      "Light"
-    else
-      "Dark"
     end
   end
 end
