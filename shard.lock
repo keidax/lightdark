@@ -1,14 +1,14 @@
-version: 1.0
+version: 2.0
 shards:
   ameba:
-    github: crystal-ameba/ameba
+    git: https://github.com/crystal-ameba/ameba.git
     version: 0.11.0
 
   commander:
-    github: mrrooijen/commander
+    git: https://github.com/mrrooijen/commander.git
     version: 0.3.5
 
   croft:
-    github: keidax/croft
+    git: https://github.com/keidax/croft.git
     version: 0.1.0
 
